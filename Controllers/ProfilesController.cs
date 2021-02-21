@@ -36,6 +36,7 @@ namespace Eestate.Controllers
             _context = context;
             this.userManager = userManager;
             this.signInManager = signInManager;
+            //GitHub test line
         }
 
         [HttpPost]
