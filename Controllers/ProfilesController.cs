@@ -52,6 +52,13 @@ namespace Eestate.Controllers
                 {
                     profile.FullName = editedProfile.FullName;
                     profile.Address1 = editedProfile.Address1;
+                    profile.Address2 = editedProfile.Address2;
+                    profile.Zip = editedProfile.Zip;
+                    profile.City = editedProfile.City;
+                    profile.Phone = editedProfile.Phone;
+                    
+                    profile.ModifiedDate = DateTime.Now;
+
                     _context.Profiles.Update(profile);
                     await _context.SaveChangesAsync();
                     return StatusCode(StatusCodes.Status200OK);
@@ -59,6 +66,16 @@ namespace Eestate.Controllers
             }
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
+
+        [HttpPost]
+        [Authorize]
+        [Route("[action]")]
+        [Produces("application/json")]
+        public ActionResult isuserloggedin(EditProfileViewModel editedProfile)
+        {
+            return StatusCode(StatusCodes.Status200OK);
+        }
+            
 
         [HttpPost]
         public async Task<ActionResult<Profile>> CreateUser(CreateProfileViewModel createProfile)
