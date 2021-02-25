@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Eestate.Models;
 using Eestate.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using System.Net.Http;
 
 namespace Eestate.Controllers
 {
@@ -17,10 +20,12 @@ namespace Eestate.Controllers
     public class EstatesController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IWebHostEnvironment webEnviroment;
 
-        public EstatesController(AppDbContext context)
+        public EstatesController(AppDbContext context, IWebHostEnvironment webEnviroment)
         {
             _context = context;
+            this.webEnviroment = webEnviroment;
         }
 
         // GET: api/Estates
@@ -124,5 +129,26 @@ namespace Eestate.Controllers
         {
             return _context.Estates.Any(e => e.Id == id);
         }
+        [HttpPost]
+        [Authorize]
+        [Route("[action]")]
+        [Produces("application/json")]
+      
+        public async Task<ActionResult<Estate>> uploadFile()
+        {
+            var formCollection = await Request.ReadFormAsync();
+            var file = formCollection.Files.First();
+
+            string uploadFolder = Path.Combine(webEnviroment.ContentRootPath, "UploadedFiles");
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+                    string filePath = Path.Combine(uploadFolder, uniqueFileName);
+                   file.CopyTo(new FileStream(filePath, FileMode.Create));
+                    return StatusCode(StatusCodes.Status200OK);
+        
+
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+
+
     }
 }
