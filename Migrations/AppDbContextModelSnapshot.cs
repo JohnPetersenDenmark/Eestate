@@ -26,11 +26,35 @@ namespace Eestate.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<string>("Address1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Address2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Areal")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("BuyerIdentityUserIds")
                         .HasColumnType("int");
 
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<decimal>("EjerudgiftPrMd")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("EstateType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GrundAreal")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Liggetid")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
@@ -38,12 +62,45 @@ namespace Eestate.Migrations
                     b.Property<int>("OwnerIdentityUserIds")
                         .HasColumnType("int");
 
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("PrisPrM2")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("RegistrationNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VaegtetAreal")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Zip")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Estates");
+                });
+
+            modelBuilder.Entity("Eestate.Models.FileAttachment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int>("EstateId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProfileId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UniqueFileName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FileAttachments");
                 });
 
             modelBuilder.Entity("Eestate.Models.Profile", b =>

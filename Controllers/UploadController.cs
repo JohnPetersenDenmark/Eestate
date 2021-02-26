@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Eestate.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,39 +13,53 @@ namespace Eestate.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UploadController : ControllerBase
     {
+        private readonly AppDbContext _context;
+        private readonly IWebHostEnvironment webEnviroment;
+
+        public UploadController(AppDbContext context, IWebHostEnvironment webEnviroment)
+        {
+            _context = context;
+            this.webEnviroment = webEnviroment;
+        }
+
 
         [HttpPost]
+        [Authorize]
         [Route("[action]")]
-        public async Task<IActionResult> OnPostUpload()
+        [Produces("application/json")]
+        public async Task<ActionResult> uploadFile()
         {
             var formCollection = await Request.ReadFormAsync();
+
             var file = formCollection.Files.First();
 
-         
+            if (file == null)
+            {
+                return StatusCode(StatusCodes.Status204NoContent);
+            }
 
-            //long size = files.Sum(f => f.Length);
 
-            //foreach (var formFile in files)
-            //{
-            //    if (formFile.Length > 0)
-            //    {
-            //        var filePath = Path.GetTempFileName();
+            string uploadFolder = Path.Combine(webEnviroment.ContentRootPath, "UploadedFiles");
+            string uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+            string filePath = Path.Combine(uploadFolder, uniqueFileName);
+            file.CopyTo(new FileStream(filePath, FileMode.Create));
 
-            //        using (var stream = System.IO.File.Create(filePath))
-            //        {
-            //            await formFile.CopyToAsync(stream);
-            //        }
-            //    }
-            //}
 
-            //// Process uploaded files
-            //// Don't rely on or trust the FileName property without validation.
+            string estateId = formCollection["EstateId"];
+            string profileId = formCollection["profileId"];
 
-            //return Ok(new { count = files.Count, size });
+            FileAttachment fileAttachment = new FileAttachment();
+            fileAttachment.ProfileId = int.Parse(profileId);
+            fileAttachment.EstateId = int.Parse(estateId);
+            fileAttachment.UniqueFileName = uniqueFileName;
 
-            return Ok();
+            _context.FileAttachments.Add(fileAttachment);
+            await _context.SaveChangesAsync();
+
+            return StatusCode(StatusCodes.Status200OK);
         }
     }
 }

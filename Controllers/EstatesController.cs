@@ -35,9 +35,9 @@ namespace Eestate.Controllers
         {
             List<EstateViewModel> estateModels = new List<EstateViewModel>();
 
-            List<Estate> estates =  await _context.Estates.ToListAsync();
+            List<Estate> estates = await _context.Estates.ToListAsync();
 
-            foreach( var estate in estates)
+            foreach (var estate in estates)
             {
                 EstateViewModel model = new EstateViewModel();
                 model.Id = estate.Id.ToString();
@@ -65,6 +65,21 @@ namespace Eestate.Controllers
             }
 
             return estate;
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        [Produces("application/json")]
+        public  List<Estate> GetEstateByProfileId(int profileId)
+        {
+            var estateList =  _context.Estates.Where(estate => estate.OwnerIdentityUserIds == profileId).ToList();
+
+            if (estateList == null)
+            {
+                return null;
+            }
+
+            return estateList;
         }
 
         // PUT: api/Estates/5
@@ -101,12 +116,43 @@ namespace Eestate.Controllers
         // POST: api/Estates
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Estate>> PostEstate(Estate estate)
+        public async Task<ActionResult> PostEstate(EstateViewModel model)
         {
+            Estate estate = new Estate();
+
+            if (! string.IsNullOrEmpty(model.BuyerIdentityUserIds))
+                estate.BuyerIdentityUserIds = int.Parse(model.BuyerIdentityUserIds);
+
+            if (!string.IsNullOrEmpty(model.OwnerIdentityUserIds))
+                estate.OwnerIdentityUserIds = int.Parse(model.OwnerIdentityUserIds);
+
+            estate.RegistrationNumber = model.RegistrationNumber;
+
+            estate.Address1 = model.Address1;
+            estate.Address2 = model.Address2;
+            estate.Zip = model.Zip;
+            estate.City = model.City;
+
+            estate.Price = Decimal.Parse(model.Price);
+            estate.EjerudgiftPrMd = Decimal.Parse(model.EjerudgiftPrMd);
+            estate.PrisPrM2 = Decimal.Parse(model.PrisPrM2);
+
+            estate.Areal = model.Areal;
+            estate.VaegtetAreal = model.VaegtetAreal;
+            estate.GrundAreal = model.GrundAreal;
+
+            estate.CreatedDate = DateTime.Now;
+            estate.ModifiedDate = DateTime.Now;
+
             _context.Estates.Add(estate);
+
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetEstate", new { id = estate.Id }, estate);
+       
+            return NoContent();
+
+
+
         }
 
         // DELETE: api/Estates/5
@@ -129,25 +175,9 @@ namespace Eestate.Controllers
         {
             return _context.Estates.Any(e => e.Id == id);
         }
-        [HttpPost]
-        [Authorize]
-        [Route("[action]")]
-        [Produces("application/json")]
-      
-        public async Task<ActionResult<Estate>> uploadFile()
-        {
-            var formCollection = await Request.ReadFormAsync();
-            var file = formCollection.Files.First();
 
-            string uploadFolder = Path.Combine(webEnviroment.ContentRootPath, "UploadedFiles");
-                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
-                    string filePath = Path.Combine(uploadFolder, uniqueFileName);
-                   file.CopyTo(new FileStream(filePath, FileMode.Create));
-                    return StatusCode(StatusCodes.Status200OK);
+
         
-
-            return StatusCode(StatusCodes.Status500InternalServerError);
-        }
 
 
     }

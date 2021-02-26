@@ -17,6 +17,8 @@ namespace Eestate.Models
 
         public DbSet<Estate> Estates { get; set; }
 
+        public DbSet<FileAttachment> FileAttachments { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
