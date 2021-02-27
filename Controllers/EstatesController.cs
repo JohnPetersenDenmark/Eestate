@@ -70,115 +70,145 @@ namespace Eestate.Controllers
         [HttpGet]
         [Route("[action]")]
         [Produces("application/json")]
-        public  List<Estate> GetEstateByProfileId(int profileId)
+        public List<EstateViewModel> GetEstateByProfileId(int profileId)
         {
-            var estateList =  _context.Estates.Where(estate => estate.OwnerIdentityUserIds == profileId).ToList();
+            List<EstateViewModel> modelList = new();
+            var estateList = _context.Estates.Where(estate => estate.OwnerIdentityUserIds == profileId).ToList();
 
             if (estateList == null)
             {
                 return null;
             }
 
-            return estateList;
+            foreach (var estate in estateList)
+            {
+                EstateViewModel model = new EstateViewModel();
+
+                model.Id = estate.Id.ToString();
+                model.Address1 = estate.Address1;
+                model.Address2 = estate.Address2;
+                model.Zip = estate.Zip;
+                model.City = estate.City;
+
+                model.RegistrationNumber = estate.RegistrationNumber;
+                model.EstateType = estate.EstateType;
+                model.Liggetid = estate.Liggetid;
+                model.Price = estate.Price.ToString();
+                model.EjerudgiftPrMd = estate.EjerudgiftPrMd.ToString();
+                model.PrisPrM2 = estate.PrisPrM2.ToString();
+
+                model.Areal = estate.Areal;
+
+                model.VaegtetAreal = estate.VaegtetAreal;
+                model.GrundAreal = estate.GrundAreal;
+                model.OwnerIdentityUserIds = estate.OwnerIdentityUserIds.ToString();
+                model.BuyerIdentityUserIds = estate.BuyerIdentityUserIds.ToString();
+                model.CreatedDate = estate.CreatedDate.ToString();
+                model.ModifiedDate = estate.ModifiedDate.ToString();
+
+                modelList.Add(model);
+            }
+            return modelList;
+        }
+               
+
+    // PUT: api/Estates/5
+    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    [HttpPut("{id}")]
+    public async Task<IActionResult> PutEstate(int id, Estate estate)
+    {
+        if (id != estate.Id)
+        {
+            return BadRequest();
         }
 
-        // PUT: api/Estates/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutEstate(int id, Estate estate)
+        _context.Entry(estate).State = EntityState.Modified;
+
+        try
         {
-            if (id != estate.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(estate).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!EstateExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Estates
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult> PostEstate(EstateViewModel model)
-        {
-            Estate estate = new Estate();
-
-            if (! string.IsNullOrEmpty(model.BuyerIdentityUserIds))
-                estate.BuyerIdentityUserIds = int.Parse(model.BuyerIdentityUserIds);
-
-            if (!string.IsNullOrEmpty(model.OwnerIdentityUserIds))
-                estate.OwnerIdentityUserIds = int.Parse(model.OwnerIdentityUserIds);
-
-            estate.RegistrationNumber = model.RegistrationNumber;
-
-            estate.Address1 = model.Address1;
-            estate.Address2 = model.Address2;
-            estate.Zip = model.Zip;
-            estate.City = model.City;
-
-            estate.Price = Decimal.Parse(model.Price);
-            estate.EjerudgiftPrMd = Decimal.Parse(model.EjerudgiftPrMd);
-            estate.PrisPrM2 = Decimal.Parse(model.PrisPrM2);
-
-            estate.Areal = model.Areal;
-            estate.VaegtetAreal = model.VaegtetAreal;
-            estate.GrundAreal = model.GrundAreal;
-
-            estate.CreatedDate = DateTime.Now;
-            estate.ModifiedDate = DateTime.Now;
-
-            _context.Estates.Add(estate);
-
             await _context.SaveChangesAsync();
-
-       
-            return NoContent();
-
-
-
         }
-
-        // DELETE: api/Estates/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteEstate(int id)
+        catch (DbUpdateConcurrencyException)
         {
-            var estate = await _context.Estates.FindAsync(id);
-            if (estate == null)
+            if (!EstateExists(id))
             {
                 return NotFound();
             }
-
-            _context.Estates.Remove(estate);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            else
+            {
+                throw;
+            }
         }
 
-        private bool EstateExists(int id)
-        {
-            return _context.Estates.Any(e => e.Id == id);
-        }
+        return NoContent();
+    }
+
+    // POST: api/Estates
+    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    [HttpPost]
+    public async Task<ActionResult> PostEstate(EstateViewModel model)
+    {
+        Estate estate = new Estate();
+
+        if (!string.IsNullOrEmpty(model.BuyerIdentityUserIds))
+            estate.BuyerIdentityUserIds = int.Parse(model.BuyerIdentityUserIds);
+
+        if (!string.IsNullOrEmpty(model.OwnerIdentityUserIds))
+            estate.OwnerIdentityUserIds = int.Parse(model.OwnerIdentityUserIds);
+
+        estate.RegistrationNumber = model.RegistrationNumber;
+
+        estate.Address1 = model.Address1;
+        estate.Address2 = model.Address2;
+        estate.Zip = model.Zip;
+        estate.City = model.City;
+
+        estate.Price = Decimal.Parse(model.Price);
+        estate.EjerudgiftPrMd = Decimal.Parse(model.EjerudgiftPrMd);
+        estate.PrisPrM2 = Decimal.Parse(model.PrisPrM2);
+
+        estate.Areal = model.Areal;
+        estate.VaegtetAreal = model.VaegtetAreal;
+        estate.GrundAreal = model.GrundAreal;
+
+        estate.CreatedDate = DateTime.Now;
+        estate.ModifiedDate = DateTime.Now;
+
+        _context.Estates.Add(estate);
+
+        await _context.SaveChangesAsync();
 
 
-        
+        return NoContent();
+
 
 
     }
+
+    // DELETE: api/Estates/5
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteEstate(int id)
+    {
+        var estate = await _context.Estates.FindAsync(id);
+        if (estate == null)
+        {
+            return NotFound();
+        }
+
+        _context.Estates.Remove(estate);
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
+
+    private bool EstateExists(int id)
+    {
+        return _context.Estates.Any(e => e.Id == id);
+    }
+
+
+
+
+
+}
 }
