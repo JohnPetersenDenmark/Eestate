@@ -30,7 +30,7 @@ namespace Eestate.Controllers
         [Authorize]
         [Route("[action]")]
         [Produces("application/json")]
-        public async Task<ActionResult> uploadFile()
+        public async Task<string> uploadFile()
         {
             var formCollection = await Request.ReadFormAsync();
 
@@ -38,28 +38,42 @@ namespace Eestate.Controllers
 
             if (file == null)
             {
-                return StatusCode(StatusCodes.Status204NoContent);
+                // return StatusCode(StatusCodes.Status204NoContent);
             }
 
 
             string uploadFolder = Path.Combine(webEnviroment.ContentRootPath, "UploadedFiles");
             string uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
             string filePath = Path.Combine(uploadFolder, uniqueFileName);
-            file.CopyTo(new FileStream(filePath, FileMode.Create));
+            FileStream fs = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
+            file.CopyTo(fs);
 
 
             string estateId = formCollection["EstateId"];
             string profileId = formCollection["profileId"];
+           
 
             FileAttachment fileAttachment = new FileAttachment();
             fileAttachment.ProfileId = int.Parse(profileId);
             fileAttachment.EstateId = int.Parse(estateId);
+
             fileAttachment.UniqueFileName = uniqueFileName;
+
+            fileAttachment.OriginalFileName = file.FileName;
+            fileAttachment.ContentType = file.ContentType;
 
             _context.FileAttachments.Add(fileAttachment);
             await _context.SaveChangesAsync();
 
-            return StatusCode(StatusCodes.Status200OK);
+            //return StatusCode(StatusCodes.Status200OK);
+           
+            return "Ok";
+
         }
+    }
+
+    public class ResponseTmp
+    {
+        public string message { get; set; }
     }
 }

@@ -12,6 +12,9 @@ namespace Eestate.Models
 
         public int ProfileId { get; set; }
 
-        public string UniqueFileName { get; set; }       
+        public string UniqueFileName { get; set; }
+
+        public string OriginalFileName { get; set; }
+        public string ContentType { get; set; }
     }
 }
