@@ -1,4 +1,5 @@
 ﻿using Eestate.Models;
+using Eestate.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -29,13 +30,38 @@ namespace Eestate.Controllers
         [HttpGet]
         [Route("[action]")]
         [Produces("application/json")]
-        public  List<FileAttachment> GetUploadedFilesByEstateId(int estateId)
+        public  List<FileAttachmentViewModel> GetUploadedFilesByEstateId(int estateId)
         {
 
-          // var x =   context.FileAttachments.Where(file => file.EstateId == estateId).ToList();
+            List<FileAttachmentViewModel> model = new List<FileAttachmentViewModel>();
 
-            var x = context.FileAttachments.ToList();
-            return x; ;
+            List<FileAttachment> fileAttachmentList = context.FileAttachments.ToList();
+
+            foreach (var fileAttachment in fileAttachmentList)
+            {
+                FileAttachmentViewModel fileAttachmentModel = new FileAttachmentViewModel();
+
+                fileAttachmentModel.Id = fileAttachment.Id;
+                fileAttachmentModel.EstateId = fileAttachment.EstateId;
+                fileAttachmentModel.ProfileId = fileAttachment.ProfileId;
+                fileAttachmentModel.DocumentTypeId = fileAttachment.DocumentTypeId;
+                fileAttachmentModel.OriginalFileName = fileAttachment.OriginalFileName;
+                fileAttachmentModel.UniqueFileName = fileAttachment.UniqueFileName;
+                fileAttachmentModel.ContentType = fileAttachment.ContentType;
+               
+                if (fileAttachment.DocumentTypeId != 0)
+                {
+                    DocumentType docType = context.DocumentTypes.Find(fileAttachment.DocumentTypeId);
+                    if (docType != null)
+                    {
+                        fileAttachmentModel.DocumentTypeHelpText = docType.HelpText;
+                        fileAttachmentModel.DocumentDescription = docType.Description;
+                    }
+                }
+
+                model.Add(fileAttachmentModel);
+            }
+                return model;
         }
 
        
@@ -71,6 +97,29 @@ namespace Eestate.Controllers
         [HttpGet]
         [Route("[action]")]
 
+        public async Task<List<DocumentTypeViewModel>> documentTypes(int fileId)
+        {
+            List<DocumentType> docTypes = context.DocumentTypes.ToList();
+
+            List<DocumentTypeViewModel> model = new List<DocumentTypeViewModel>();
+
+            foreach( var docType in docTypes)
+            {
+                DocumentTypeViewModel docTypeModel = new DocumentTypeViewModel();
+                docTypeModel.Id = docType.Id.ToString();
+                docTypeModel.Description = docType.Description;
+                docTypeModel.HelpText = docType.HelpText;
+
+                model.Add(docTypeModel);
+            }
+
+            return model;
+
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+
         public async Task<ActionResult> showFile(int fileId)
         {
             FileAttachment attachment = await context.FileAttachments.FindAsync(fileId);
@@ -93,5 +142,31 @@ namespace Eestate.Controllers
 
         }
 
+        [HttpGet]
+        [Route("[action]")]
+        [Produces("application/json")]
+
+        public async Task<ActionResult> deleteFile(int fileId)
+        {
+            FileAttachment attachment = await context.FileAttachments.FindAsync(fileId);
+
+            if (attachment != null)
+            {
+                string uploadFolder = Path.Combine(webEnviroment.ContentRootPath, "UploadedFiles");
+                string uniqueFileName = attachment.UniqueFileName;
+                string filePath = Path.Combine(uploadFolder, uniqueFileName);
+
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);                   
+                }
+
+                context.FileAttachments.Remove(attachment);
+                return StatusCode(StatusCodes.Status200OK);
+            }
+
+            return StatusCode(StatusCodes.Status200OK);
+
+        }
     }
 }

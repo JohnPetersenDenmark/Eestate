@@ -19,6 +19,8 @@ namespace Eestate.Models
 
         public DbSet<FileAttachment> FileAttachments { get; set; }
 
+        public DbSet<DocumentType> DocumentTypes { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

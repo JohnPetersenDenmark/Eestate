@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 
 namespace Eestate.Controllers
 {
+  
+
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
@@ -30,7 +32,7 @@ namespace Eestate.Controllers
         [Authorize]
         [Route("[action]")]
         [Produces("application/json")]
-        public async Task<string> uploadFile()
+        public async Task<ActionResult> uploadFile()
         {
             var formCollection = await Request.ReadFormAsync();
 
@@ -48,14 +50,17 @@ namespace Eestate.Controllers
             FileStream fs = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
             file.CopyTo(fs);
 
+            fs.Dispose();
 
             string estateId = formCollection["EstateId"];
             string profileId = formCollection["profileId"];
-           
+            string documentTypeId = formCollection["DocumentTypeId"]; 
+
 
             FileAttachment fileAttachment = new FileAttachment();
             fileAttachment.ProfileId = int.Parse(profileId);
             fileAttachment.EstateId = int.Parse(estateId);
+            fileAttachment.DocumentTypeId = int.Parse(documentTypeId);
 
             fileAttachment.UniqueFileName = uniqueFileName;
 
@@ -65,9 +70,9 @@ namespace Eestate.Controllers
             _context.FileAttachments.Add(fileAttachment);
             await _context.SaveChangesAsync();
 
-            //return StatusCode(StatusCodes.Status200OK);
+            return StatusCode(StatusCodes.Status200OK);
            
-            return "Ok";
+        
 
         }
     }

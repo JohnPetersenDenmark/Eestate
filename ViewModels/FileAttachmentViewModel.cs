@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Eestate.Models
+namespace Eestate.ViewModels
 {
-    public class FileAttachment
+    public class FileAttachmentViewModel
     {
         public int Id { get; set; }
         public int EstateId { get; set; }
@@ -13,6 +13,8 @@ namespace Eestate.Models
         public int ProfileId { get; set; }
 
         public int DocumentTypeId { get; set; }
+        public string DocumentDescription { get; set; }
+        public string DocumentTypeHelpText { get; set; }
 
         public string UniqueFileName { get; set; }
 
