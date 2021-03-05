@@ -56,6 +56,7 @@ namespace Eestate.Controllers
                     {
                         fileAttachmentModel.DocumentTypeHelpText = docType.HelpText;
                         fileAttachmentModel.DocumentDescription = docType.Description;
+                        fileAttachmentModel.Category = docType.Category;
                     }
                 }
 

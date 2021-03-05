@@ -16,6 +16,7 @@ namespace Eestate.ViewModels
         public string DocumentDescription { get; set; }
         public string DocumentTypeHelpText { get; set; }
 
+        public string Category { get; set; }
         public string UniqueFileName { get; set; }
 
         public string OriginalFileName { get; set; }
