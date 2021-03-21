@@ -11,7 +11,7 @@ namespace Eestate.ViewModels
         public int EstateId { get; set; }
 
         public int ProfileId { get; set; }
-
+        public string FileCategory { get; set; }
         public int DocumentTypeId { get; set; }
         public string DocumentDescription { get; set; }
         public string DocumentTypeHelpText { get; set; }

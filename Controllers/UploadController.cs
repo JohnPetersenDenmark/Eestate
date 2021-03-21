@@ -44,20 +44,34 @@ namespace Eestate.Controllers
             }
 
 
-            string uploadFolder = Path.Combine(webEnviroment.ContentRootPath, "UploadedFiles");
+            string uploadFolder = Path.Combine(webEnviroment.ContentRootPath, "Services/UploadedFiles");
             string uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
             string filePath = Path.Combine(uploadFolder, uniqueFileName);
-            FileStream fs = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
+            FileStream fs = null;
+
+            try
+            {
+                 fs = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
+            }
+            catch (Exception e)
+            {
+                int x = 1;
+            }
+
+
+         
             file.CopyTo(fs);
 
             fs.Dispose();
 
+            string fileCategory = formCollection["fileCategory"];
             string estateId = formCollection["EstateId"];
             string profileId = formCollection["profileId"];
             string documentTypeId = formCollection["DocumentTypeId"]; 
 
 
             FileAttachment fileAttachment = new FileAttachment();
+            fileAttachment.FileCategory = fileCategory;
             fileAttachment.ProfileId = int.Parse(profileId);
             fileAttachment.EstateId = int.Parse(estateId);
             fileAttachment.DocumentTypeId = int.Parse(documentTypeId);

@@ -35,7 +35,7 @@ namespace Eestate.Controllers
 
             List<FileAttachmentViewModel> model = new List<FileAttachmentViewModel>();
 
-            List<FileAttachment> fileAttachmentList = context.FileAttachments.ToList();
+            List<FileAttachment> fileAttachmentList = context.FileAttachments.Where(attachment => attachment.EstateId == estateId).ToList();
 
             foreach (var fileAttachment in fileAttachmentList)
             {
@@ -44,6 +44,7 @@ namespace Eestate.Controllers
                 fileAttachmentModel.Id = fileAttachment.Id;
                 fileAttachmentModel.EstateId = fileAttachment.EstateId;
                 fileAttachmentModel.ProfileId = fileAttachment.ProfileId;
+                fileAttachmentModel.FileCategory = fileAttachment.FileCategory;
                 fileAttachmentModel.DocumentTypeId = fileAttachment.DocumentTypeId;
                 fileAttachmentModel.OriginalFileName = fileAttachment.OriginalFileName;
                 fileAttachmentModel.UniqueFileName = fileAttachment.UniqueFileName;
