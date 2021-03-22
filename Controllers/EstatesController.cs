@@ -185,8 +185,53 @@ namespace Eestate.Controllers
 
     }
 
-    // DELETE: api/Estates/5
-    [HttpDelete("{id}")]
+        [HttpPut]
+        public async Task<ActionResult> UpdateEstate(EstateViewModel model)
+        {
+            Estate estate = _context.Estates.Find(int.Parse(model.Id));
+            if ( estate == null)
+            {
+                return NoContent();
+            }
+        
+
+            if (!string.IsNullOrEmpty(model.BuyerIdentityUserIds))
+                estate.BuyerIdentityUserIds = int.Parse(model.BuyerIdentityUserIds);
+
+            if (!string.IsNullOrEmpty(model.OwnerIdentityUserIds))
+                estate.OwnerIdentityUserIds = int.Parse(model.OwnerIdentityUserIds);
+
+            estate.RegistrationNumber = model.RegistrationNumber;
+
+            estate.Address1 = model.Address1;
+            estate.Address2 = model.Address2;
+            estate.Zip = model.Zip;
+            estate.City = model.City;
+
+            estate.Price = Decimal.Parse(model.Price);
+            estate.EjerudgiftPrMd = Decimal.Parse(model.EjerudgiftPrMd);
+            estate.PrisPrM2 = Decimal.Parse(model.PrisPrM2);
+
+            estate.Areal = model.Areal;
+            estate.VaegtetAreal = model.VaegtetAreal;
+            estate.GrundAreal = model.GrundAreal;
+
+            estate.CreatedDate = DateTime.Now;
+            estate.ModifiedDate = DateTime.Now;
+
+            _context.Estates.Update(estate);
+
+            await _context.SaveChangesAsync();
+
+
+            return NoContent();
+
+
+
+        }
+
+        // DELETE: api/Estates/5
+        [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteEstate(int id)
     {
         var estate = await _context.Estates.FindAsync(id);
