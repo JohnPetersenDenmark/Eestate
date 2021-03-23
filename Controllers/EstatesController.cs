@@ -42,10 +42,26 @@ namespace Eestate.Controllers
                 EstateViewModel model = new EstateViewModel();
                 model.Id = estate.Id.ToString();
                 model.RegistrationNumber = estate.RegistrationNumber;
+                model.Price = estate.Price.ToString();
+                model.Address1 = estate.Address1;
+                model.Zip = estate.Zip;
+                model.City = estate.City;
+                model.Areal = estate.Areal;
+                model.VaegtetAreal = estate.VaegtetAreal;
+                model.GrundAreal = estate.GrundAreal;
+                model.EstateType = estate.EstateType;
                 model.OwnerIdentityUserIds = estate.OwnerIdentityUserIds.ToString();
                 model.BuyerIdentityUserIds = estate.BuyerIdentityUserIds.ToString();
                 model.CreatedDate = estate.CreatedDate.ToShortDateString();
                 model.ModifiedDate = estate.ModifiedDate.ToShortDateString();
+
+                List<FileAttachment> fileAttachmentList = _context.FileAttachments.Where(attachment => attachment.EstateId == estate.Id && attachment.FileCategory=="image").ToList();
+
+                if(fileAttachmentList.Count > 0)
+                {
+                    FileAttachment fileAttachment = fileAttachmentList.First();
+                    model.ThumbNailFilePathAndName = fileAttachment.UniqueFileName;
+                }
 
                 estateModels.Add(model);
             }
