@@ -76,7 +76,7 @@ namespace Eestate.Controllers
 
             if (attachment != null)
             {
-                string uploadFolder = Path.Combine(webEnviroment.ContentRootPath, "UploadedFiles");
+                string uploadFolder = Path.Combine(webEnviroment.ContentRootPath, "Services/UploadedFiles");
                 string uniqueFileName = attachment.UniqueFileName;
                 string filePath = Path.Combine(uploadFolder, uniqueFileName);
 
@@ -128,7 +128,7 @@ namespace Eestate.Controllers
 
             if (attachment != null)
             {
-                string uploadFolder = Path.Combine(webEnviroment.ContentRootPath, "UploadedFiles");
+                string uploadFolder = Path.Combine(webEnviroment.ContentRootPath, "Services/UploadedFiles");
                 string uniqueFileName = attachment.UniqueFileName;
                 string filePath = Path.Combine(uploadFolder, uniqueFileName);
 
@@ -154,7 +154,7 @@ namespace Eestate.Controllers
 
             if (attachment != null)
             {
-                string uploadFolder = Path.Combine(webEnviroment.ContentRootPath, "UploadedFiles");
+                string uploadFolder = Path.Combine(webEnviroment.ContentRootPath, "Services/UploadedFiles");
                 string uniqueFileName = attachment.UniqueFileName;
                 string filePath = Path.Combine(uploadFolder, uniqueFileName);
 
