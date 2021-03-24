@@ -23,7 +23,11 @@ namespace Eestate.Models
         public string Areal { get; set; }
         public string VaegtetAreal { get; set; }
         public string GrundAreal { get; set; }
-       
+
+        public string NoOfRooms { get; set; }
+
+        public string BuildedYear { get; set; }
+
         public int OwnerIdentityUserIds { get; set; }
         public int BuyerIdentityUserIds { get; set; }
 

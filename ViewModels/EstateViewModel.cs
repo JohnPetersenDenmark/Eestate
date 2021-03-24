@@ -23,6 +23,8 @@ namespace Eestate.ViewModels
         public string Areal { get; set; }
         public string VaegtetAreal { get; set; }
         public string GrundAreal { get; set; }
+        public string NoOfRooms { get; set; }
+        public string BuildedYear { get; set; }
         public string ThumbNailFilePathAndName { get; set; }
         public string OwnerIdentityUserIds { get; set; }
         public string BuyerIdentityUserIds { get; set; }
