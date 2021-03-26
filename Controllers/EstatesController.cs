@@ -28,20 +28,17 @@ namespace Eestate.Controllers
             this.webEnviroment = webEnviroment;
         }
 
-        // GET: api/Estates
+        
+
+
         [HttpGet]
         [Produces("application/json")]
-        public async Task<ActionResult<PagingViewModel<EstateViewModel>>> GetEstates(int? page, int? pageSize)
+        public async Task<ActionResult<List<EstateViewModel>>> GetEstates()
         {
-            var result = new PagingViewModel<EstateViewModel>();
-            result.Count = _context.Estates.Count();
-            result.PageIndex = page ?? 1;
-            result.PageSize = pageSize ?? 1;
+ 
+            List<Estate> estateList = _context.Estates.ToList();
 
-
-            List<Estate> estateList = _context.Estates.Skip((page - 1 ?? 0) * result.PageSize).Take(result.PageSize).ToList();
-
-            result.Items = new List<EstateViewModel>();
+            List<EstateViewModel> estateModels = new List<EstateViewModel>();
 
             foreach (var estate in estateList)
             {
@@ -71,11 +68,13 @@ namespace Eestate.Controllers
                     model.ThumbNailFilePathAndName = fileAttachment.UniqueFileName;
                 }
 
-                result.Items.Add(model);
+                estateModels.Add(model);
             }
 
-            return result;
+            return estateModels;
         }
+
+
 
         // GET: api/Estates/5
         [HttpGet("{id}")]
