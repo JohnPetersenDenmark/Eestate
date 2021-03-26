@@ -31,13 +31,19 @@ namespace Eestate.Controllers
         // GET: api/Estates
         [HttpGet]
         [Produces("application/json")]
-        public async Task<ActionResult<List<EstateViewModel>>> GetEstates()
+        public async Task<ActionResult<PagingViewModel<EstateViewModel>>> GetEstates(int? page, int? pageSize)
         {
-            List<EstateViewModel> estateModels = new List<EstateViewModel>();
+            var result = new PagingViewModel<EstateViewModel>();
+            result.Count = _context.Estates.Count();
+            result.PageIndex = page ?? 1;
+            result.PageSize = pageSize ?? 1;
 
-            List<Estate> estates = await _context.Estates.ToListAsync();
 
-            foreach (var estate in estates)
+            List<Estate> estateList = _context.Estates.Skip((page - 1 ?? 0) * result.PageSize).Take(result.PageSize).ToList();
+
+            result.Items = new List<EstateViewModel>();
+
+            foreach (var estate in estateList)
             {
                 EstateViewModel model = new EstateViewModel();
                 model.Id = estate.Id.ToString();
@@ -65,10 +71,10 @@ namespace Eestate.Controllers
                     model.ThumbNailFilePathAndName = fileAttachment.UniqueFileName;
                 }
 
-                estateModels.Add(model);
+                result.Items.Add(model);
             }
 
-            return estateModels;
+            return result;
         }
 
         // GET: api/Estates/5
