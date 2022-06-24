@@ -188,7 +188,6 @@ C:\Users\jp\source\repos\Eestate\bin\Debug\net5.0\Eestate.deps.json
 C:\Users\jp\source\repos\Eestate\bin\Debug\net5.0\Eestate.runtimeconfig.json
 C:\Users\jp\source\repos\Eestate\bin\Debug\net5.0\Eestate.runtimeconfig.dev.json
 C:\Users\jp\source\repos\Eestate\bin\Debug\net5.0\Eestate.dll
-C:\Users\jp\source\repos\Eestate\bin\Debug\net5.0\ref\Eestate.dll
 C:\Users\jp\source\repos\Eestate\bin\Debug\net5.0\Eestate.pdb
 C:\Users\jp\source\repos\Eestate\bin\Debug\net5.0\Eestate.Views.dll
 C:\Users\jp\source\repos\Eestate\bin\Debug\net5.0\Eestate.Views.pdb
@@ -336,7 +335,6 @@ C:\Users\jp\source\repos\Eestate\bin\Debug\net5.0\runtimes\win-x64\native\e_sqli
 C:\Users\jp\source\repos\Eestate\bin\Debug\net5.0\runtimes\win-x86\native\e_sqlite3.dll
 C:\Users\jp\source\repos\Eestate\bin\Debug\net5.0\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
 C:\Users\jp\source\repos\Eestate\bin\Debug\net5.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
-C:\Users\jp\source\repos\Eestate\obj\Debug\net5.0\Eestate.csprojAssemblyReference.cache
 C:\Users\jp\source\repos\Eestate\obj\Debug\net5.0\Eestate.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\jp\source\repos\Eestate\obj\Debug\net5.0\Eestate.AssemblyInfoInputs.cache
 C:\Users\jp\source\repos\Eestate\obj\Debug\net5.0\Eestate.AssemblyInfo.cs
@@ -346,7 +344,6 @@ C:\Users\jp\source\repos\Eestate\obj\Debug\net5.0\Eestate.MvcApplicationPartsAss
 C:\Users\jp\source\repos\Eestate\obj\Debug\net5.0\Eestate.RazorAssemblyInfo.cache
 C:\Users\jp\source\repos\Eestate\obj\Debug\net5.0\Eestate.RazorAssemblyInfo.cs
 C:\Users\jp\source\repos\Eestate\obj\Debug\net5.0\staticwebassets\Eestate.StaticWebAssets.Manifest.cache
-C:\Users\jp\source\repos\Eestate\obj\Debug\net5.0\staticwebassets\Eestate.StaticWebAssets.xml
 C:\Users\jp\source\repos\Eestate\obj\Debug\net5.0\scopedcss\bundle\Eestate.styles.css
 C:\Users\jp\source\repos\Eestate\obj\Debug\net5.0\Eestate.TagHelpers.input.cache
 C:\Users\jp\source\repos\Eestate\obj\Debug\net5.0\Eestate.TagHelpers.output.cache
@@ -365,3 +362,6 @@ C:\Users\jp\source\repos\Eestate\obj\Debug\net5.0\Eestate.dll
 C:\Users\jp\source\repos\Eestate\obj\Debug\net5.0\ref\Eestate.dll
 C:\Users\jp\source\repos\Eestate\obj\Debug\net5.0\Eestate.pdb
 C:\Users\jp\source\repos\Eestate\obj\Debug\net5.0\Eestate.genruntimeconfig.cache
+C:\Users\jp\source\repos\Eestate\bin\Debug\net5.0\Eestate.StaticWebAssets.xml
+C:\Users\jp\source\repos\Eestate\obj\Debug\net5.0\Eestate.csproj.AssemblyReference.cache
+C:\Users\jp\source\repos\Eestate\obj\Debug\net5.0\refint\Eestate.dll
